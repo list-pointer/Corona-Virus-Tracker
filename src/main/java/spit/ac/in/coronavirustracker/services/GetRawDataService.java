@@ -23,7 +23,7 @@ public class GetRawDataService {
 
     public final static String DATA_URl = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
-    private List<LocationStats> locationStatsList=new ArrayList<>();
+    private List<LocationStats> locationStatsList = new ArrayList<>();
 
     @PostConstruct //execute this function on start
     @Scheduled(cron = "* * 1 * * *")
@@ -35,27 +35,34 @@ public class GetRawDataService {
     public void fetchData() throws IOException, InterruptedException {
 
 //        this temp list will store data while fetching from the github
-//                then populate the original list so that there is no error while fetching
-List<LocationStats> tempLocationStatsList=new ArrayList<>();
+//        then populate the original list so that there is no error while fetching
+        List<LocationStats> tempLocationStatsList = new ArrayList<>();
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(DATA_URl)).build();
         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
 //        this will give us a stringReader which can be passed to the commons-csv library
-//            that will store the headers in the iterable list
-        StringReader stringReader=new StringReader(httpResponse.body());
-Iterable<CSVRecord> csvRecordIterable= CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(stringReader);
-for(CSVRecord csvRecord: csvRecordIterable){
-    LocationStats locationStats=new LocationStats();
-    locationStats.setState(csvRecord.get("Province/State"));
-    locationStats.setCountry(csvRecord.get("Country/Region"));
-    locationStats.setTotalCases(Integer.parseInt(csvRecord.get(csvRecord.size()-1)));
-    tempLocationStatsList.add(locationStats);
+//        that will store the headers in the iterable list
+        StringReader stringReader = new StringReader(httpResponse.body());
+        Iterable<CSVRecord> csvRecordIterable = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(stringReader);
+        for (CSVRecord csvRecord : csvRecordIterable) {
 
-}
+            int latestCases = Integer.parseInt(csvRecord.get(csvRecord.size() - 1));
+            int previousCases = Integer.parseInt(csvRecord.get(csvRecord.size() - 2));
 
-this.locationStatsList=tempLocationStatsList;
+            LocationStats locationStats = new LocationStats();
+            locationStats.setState(csvRecord.get("Province/State"));
+            locationStats.setCountry(csvRecord.get("Country/Region"));
+
+            locationStats.setTotalCases(latestCases);
+            locationStats.setDiff(latestCases - previousCases);
+
+            tempLocationStatsList.add(locationStats);
+
+        }
+
+        this.locationStatsList = tempLocationStatsList;
 
     }
 
