@@ -1,5 +1,6 @@
 package spit.ac.in.coronavirustracker.services;
 
+import lombok.Data;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Service
 public class GetRawDataService {
 
@@ -28,6 +30,7 @@ public class GetRawDataService {
 //    this will make this function run every second and update the data
 //    ****** stands for seconds mins hours date and year
 //    this will make the function run once a day
+
 
     public void fetchData() throws IOException, InterruptedException {
 
@@ -48,7 +51,6 @@ for(CSVRecord csvRecord: csvRecordIterable){
     locationStats.setState(csvRecord.get("Province/State"));
     locationStats.setCountry(csvRecord.get("Country/Region"));
     locationStats.setTotalCases(Integer.parseInt(csvRecord.get(csvRecord.size()-1)));
-    System.out.println(locationStats);
     tempLocationStatsList.add(locationStats);
 
 }
