@@ -21,11 +21,14 @@ public class HomePageController {
     //Model class is provided by spring boot and it can be used to set and send data on the html pagae
     public String Home(Model model) {
         List<LocationStats> locationStatsList = getRawDataService.getLocationStatsList();
+
         int totalReportedCase = locationStatsList.stream().mapToInt(stat -> stat.getTotalCases()).sum();
         int totalNewCases = locationStatsList.stream().mapToInt(stat -> stat.getDiff()).sum();
+
         model.addAttribute("locationStats", locationStatsList);
         model.addAttribute("totalReportedCase", totalReportedCase);
         model.addAttribute("totalNewCases", totalNewCases);
+
         //this function will be associated with home.html and will render the same
         return "home";
     }
