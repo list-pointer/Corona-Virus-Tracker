@@ -37,9 +37,9 @@ Corona Virus Tracker uses the folwoing Tech:
 
 ## Libraries
 
- Commons CSV | [https://commons.apache.org/proper/commons-csv/] 
- Thymeleaf | [https://www.thymeleaf.org] 
- Data Source Link | [https://github.com/CSSEGISandData/COVID-19/blob/master/who_covid_19_situation_reports/who_covid_19_sit_rep_time_series/who_covid_19_sit_rep_time_series.csv] 
+- Commons CSV | [https://commons.apache.org/proper/commons-csv/] 
+- Thymeleaf | [https://www.thymeleaf.org] 
+- Data Source Link | [https://github.com/CSSEGISandData/COVID-19/blob/master/who_covid_19_situation_reports/who_covid_19_sit_rep_time_series/who_covid_19_sit_rep_time_series.csv] 
 
 ## Screenshots
 ### HomePage 01
