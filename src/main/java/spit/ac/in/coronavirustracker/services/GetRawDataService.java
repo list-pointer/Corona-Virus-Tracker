@@ -52,7 +52,6 @@ public class GetRawDataService {
             int previousCases = Integer.parseInt(csvRecord.get(csvRecord.size() - 2));
 
             LocationStats locationStats = new LocationStats();
-            locationStats.setState(csvRecord.get("Province/State"));
             locationStats.setCountry(csvRecord.get("Country/Region"));
 
             locationStats.setTotalCases(latestCases);
